@@ -10,9 +10,11 @@
 		2562322A2A3D497600DACCF1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256232292A3D497600DACCF1 /* AppDelegate.swift */; };
 		2562322C2A3D497600DACCF1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2562322B2A3D497600DACCF1 /* SceneDelegate.swift */; };
 		2562322E2A3D497600DACCF1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2562322D2A3D497600DACCF1 /* ViewController.swift */; };
-		256232312A3D497600DACCF1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2562322F2A3D497600DACCF1 /* Main.storyboard */; };
 		256232332A3D497600DACCF1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 256232322A3D497600DACCF1 /* Assets.xcassets */; };
 		256232362A3D497600DACCF1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 256232342A3D497600DACCF1 /* LaunchScreen.storyboard */; };
+		2562323F2A3E26DD00DACCF1 /* FLEX in Frameworks */ = {isa = PBXBuildFile; productRef = 2562323E2A3E26DD00DACCF1 /* FLEX */; };
+		256232412A3E79FB00DACCF1 /* Networker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256232402A3E79FB00DACCF1 /* Networker.swift */; };
+		256232442A3E7A2D00DACCF1 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 256232432A3E7A2D00DACCF1 /* Alamofire */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,10 +22,10 @@
 		256232292A3D497600DACCF1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2562322B2A3D497600DACCF1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		2562322D2A3D497600DACCF1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		256232302A3D497600DACCF1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		256232322A3D497600DACCF1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		256232352A3D497600DACCF1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		256232372A3D497600DACCF1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		256232402A3E79FB00DACCF1 /* Networker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +33,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2562323F2A3E26DD00DACCF1 /* FLEX in Frameworks */,
+				256232442A3E7A2D00DACCF1 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,7 +63,7 @@
 				256232292A3D497600DACCF1 /* AppDelegate.swift */,
 				2562322B2A3D497600DACCF1 /* SceneDelegate.swift */,
 				2562322D2A3D497600DACCF1 /* ViewController.swift */,
-				2562322F2A3D497600DACCF1 /* Main.storyboard */,
+				256232402A3E79FB00DACCF1 /* Networker.swift */,
 				256232322A3D497600DACCF1 /* Assets.xcassets */,
 				256232342A3D497600DACCF1 /* LaunchScreen.storyboard */,
 				256232372A3D497600DACCF1 /* Info.plist */,
@@ -83,6 +87,10 @@
 			dependencies = (
 			);
 			name = BedtimeStories;
+			packageProductDependencies = (
+				2562323E2A3E26DD00DACCF1 /* FLEX */,
+				256232432A3E7A2D00DACCF1 /* Alamofire */,
+			);
 			productName = BedtimeStories;
 			productReference = 256232262A3D497600DACCF1 /* BedtimeStories.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +119,10 @@
 				Base,
 			);
 			mainGroup = 2562321D2A3D497500DACCF1;
+			packageReferences = (
+				2562323D2A3E26DD00DACCF1 /* XCRemoteSwiftPackageReference "FLEX" */,
+				256232422A3E7A2D00DACCF1 /* XCRemoteSwiftPackageReference "Alamofire" */,
+			);
 			productRefGroup = 256232272A3D497600DACCF1 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -127,7 +139,6 @@
 			files = (
 				256232362A3D497600DACCF1 /* LaunchScreen.storyboard in Resources */,
 				256232332A3D497600DACCF1 /* Assets.xcassets in Resources */,
-				256232312A3D497600DACCF1 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,20 +152,13 @@
 				2562322E2A3D497600DACCF1 /* ViewController.swift in Sources */,
 				2562322A2A3D497600DACCF1 /* AppDelegate.swift in Sources */,
 				2562322C2A3D497600DACCF1 /* SceneDelegate.swift in Sources */,
+				256232412A3E79FB00DACCF1 /* Networker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		2562322F2A3D497600DACCF1 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				256232302A3D497600DACCF1 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		256232342A3D497600DACCF1 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -216,6 +220,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -270,6 +275,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -292,7 +298,6 @@
 				INFOPLIST_FILE = BedtimeStories/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -320,7 +325,6 @@
 				INFOPLIST_FILE = BedtimeStories/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -358,6 +362,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		2562323D2A3E26DD00DACCF1 /* XCRemoteSwiftPackageReference "FLEX" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/FLEXTool/FLEX.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		256232422A3E7A2D00DACCF1 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2562323E2A3E26DD00DACCF1 /* FLEX */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2562323D2A3E26DD00DACCF1 /* XCRemoteSwiftPackageReference "FLEX" */;
+			productName = FLEX;
+		};
+		256232432A3E7A2D00DACCF1 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 256232422A3E7A2D00DACCF1 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 2562321E2A3D497500DACCF1 /* Project object */;
 }
