@@ -9,6 +9,22 @@ import UIKit
 
 class ReaderViewController: UIViewController {
     
+    let progressBar: UIProgressView = {
+        let progressBar = UIProgressView(progressViewStyle: .default)
+        progressBar.translatesAutoresizingMaskIntoConstraints = false
+        progressBar.tintColor = .white
+        progressBar.trackTintColor = UIColor.white.withAlphaComponent(0.3)
+        return progressBar
+    }()
+    
+    let activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        indicator.hidesWhenStopped = true
+        indicator.color = .white
+        return indicator
+    }()
+    
     var currentIndex: Int = 0
     var storyData: Story?
     var isCompleted = false
@@ -96,10 +112,15 @@ class ReaderViewController: UIViewController {
         textView.text = storyData?.s2.text
         noButton.isHidden = true
         yesButton.setTitle("Understood", for: .normal)
-
+        storyService.playAudio()
+         playButton.setBackgroundImage(UIImage(named: "pause_button"), for: .normal)
+        storyService.setUpAudio(named: "test_intermediary")
+        
     }
     
     func showCompletion() {
+        playButtonTapped()
+        storyService.setUpAudio(named: "test_conclusion")
         textView.text = storyData?.s3.text
         noButton.isHidden = true
         yesButton.setTitle("Done", for: .normal)
@@ -202,9 +223,14 @@ class ReaderViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        storyService.fetchStory { [weak self] (result) in
+        activityIndicator.startAnimating()
+
+        storyService.fetchStory(name: "Amelie", character_environment: "Ninja world with Naruto", topic: "Elementary school physics and energy", value: "Persistence") { [weak self] (result) in
             guard let self = self else { return }
+            self.activityIndicator.stopAnimating()
+
             switch result {
+
             case .success(let story):
                 self.storyData = story
                 self.textView.text = "The Energetic Wizard \n \(story.s1.text) \n\n\(story.question.text)"
@@ -219,23 +245,26 @@ class ReaderViewController: UIViewController {
             }
         }
 
-        storyService.setUpAudio()
+        storyService.setUpAudio(named: "test_audio")
                       
         // Set the background color to purple
         self.view.backgroundColor = UIColor(rgb: 0x143C77)
         
         // Add subviews
         self.view.addSubview(fullScreenImageView)
+        self.view.addSubview(progressBar)
         self.view.addSubview(imageView)
         self.view.addSubview(scrollView)
         self.view.addSubview(toggleButton)
         self.view.addSubview(immersiveTextView)
-        
+
         scrollView.addSubview(textView)
         scrollView.addSubview(yesButton)
         scrollView.addSubview(noButton)
         scrollView.addSubview(playButton)
         
+        self.view.addSubview(activityIndicator)
+
         immersiveTextView.text = texts[0]
 
         // Load image
@@ -256,6 +285,9 @@ class ReaderViewController: UIViewController {
         imageViewHeightConstraint = imageView.heightAnchor.constraint(equalToConstant: 250)
 
         defaultConstraints = [
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+
             imageView.topAnchor.constraint(equalTo: view.topAnchor),
             imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -273,6 +305,11 @@ class ReaderViewController: UIViewController {
             playButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
             playButton.heightAnchor.constraint(equalToConstant: 50),
             playButton.widthAnchor.constraint(equalToConstant: 50),
+            
+            progressBar.centerYAnchor.constraint(equalTo: playButton.centerYAnchor),
+            progressBar.leadingAnchor.constraint(equalTo: playButton.trailingAnchor, constant: 16),
+            progressBar.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
+            
             
             textView.topAnchor.constraint(equalTo: playButton.bottomAnchor, constant: 0),
             textView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
@@ -298,6 +335,9 @@ class ReaderViewController: UIViewController {
         ]
         
         immersiveConstraints = [
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+
             fullScreenImageView.topAnchor.constraint(equalTo: view.topAnchor),
             fullScreenImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             fullScreenImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -324,16 +364,36 @@ class ReaderViewController: UIViewController {
     
     // Add a dummy function to handle the play button tap
     @objc func playButtonTapped() {
-        if(!isPlaying){
-           storyService.playAudio()
+        if !isPlaying {
+            storyService.playAudio()
             playButton.setBackgroundImage(UIImage(named: "pause_button"), for: .normal)
+            
+            // Start updating the progress bar
+            let duration = storyService.getAudioDuration()
+            progressBar.setProgress(0, animated: false)
+            Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] timer in
+                guard let self = self else {
+                    timer.invalidate()
+                    return
+                }
+                
+                let progress = storyService.getAudioProgress()
+                self.progressBar.setProgress(Float(progress / duration), animated: true)
+                
+                if progress >= duration {
+                    timer.invalidate()
+                    self.isPlaying = false
+                    self.playButtonTapped()
+                }
+            }
         } else {
             storyService.pauseAudio()
             playButton.setBackgroundImage(UIImage(named: "play_button"), for: .normal)
-
         }
+        
         isPlaying = !isPlaying
     }
+
     
     func loadFullScreenImages(with urlStrings: [String]) {
         let dispatchGroup = DispatchGroup()

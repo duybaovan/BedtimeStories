@@ -35,32 +35,53 @@ struct Response: Codable {
 class StoryService {
     
     var audioPlayer: AVAudioPlayer?
-
     
-    func fetchStory(completion: @escaping (Result<Story, Error>) -> Void) {
+
+    let sessionManager: Session = {
+        let configuration = URLSessionConfiguration.af.default
+        configuration.requestCachePolicy = .returnCacheDataElseLoad
+        return Session(configuration: configuration)
+    }()
+
+    func fetchStory(
+        name: String,
+        character_environment: String,
+        topic: String,
+        value: String,
+        completion: @escaping (Result<Story, Error>) -> Void) {
+        
         let url = "http://localhost:8000/dev/story"
+
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/json"
+        ]
+
         let parameters: [String: Any] = [
-            "name": "Ben",
-            "modifier": "Make the story super funny",
+            "name": "Tina",
+            "modifier": "Make the story inspire values of creativity and learning. Also make sure it's inspiring and educational",
             "narration": "Dumbledore",
-            "topic": "What is energy?",
-            "character_environment": "Ninja universe",
+            "topic": "What are atoms?",
+            "character_environment": "Naruto ninja universe",
             "character_descriptors": ["freckles", "glasses", "fast"]
         ]
-        
-        AF.request(url, method: .post).responseDecodable(of: Response.self) { (response) in
-            switch response.result {
-            case .success(let data):
-                completion(.success(data.data))
-            case .failure(let error):
-                completion(.failure(error))
+
+            
+            sessionManager.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers:headers).responseDecodable(of:Response.self) { response in
+                switch response.result {
+                case .success(let data):
+                    completion(.success(data.data))
+
+                case .failure(let error):
+                    print("Request failed with error: \(error)")
+                }
             }
-        }
+            
+
     }
     
     
-    func setUpAudio() {
-        guard let url = Bundle.main.url(forResource: "test_audio", withExtension: "mp3") else { return }
+    func setUpAudio(named name: String) {
+        guard let url = Bundle.main.url(forResource: name, withExtension: "mp3") else { return }
 
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
@@ -79,5 +100,19 @@ class StoryService {
     
     func pauseAudio() {
         audioPlayer?.pause()
+    }
+    
+    func getAudioDuration() -> TimeInterval {
+        if let audioPlayer = audioPlayer {
+            return audioPlayer.duration
+        }
+        return 0
+    }
+    
+    func getAudioProgress() -> TimeInterval {
+        if let audioPlayer = audioPlayer {
+            return audioPlayer.currentTime
+        }
+        return 0
     }
 }
