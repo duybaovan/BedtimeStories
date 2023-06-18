@@ -248,8 +248,11 @@ class ReaderViewController: UIViewController {
     @objc func playButtonTapped() {
         if(!isPlaying){
            storyService.playAudio()
+            playButton.setBackgroundImage(UIImage(named: "pause_button"), for: .normal)
         } else {
             storyService.pauseAudio()
+            playButton.setBackgroundImage(UIImage(named: "play_button"), for: .normal)
+
         }
         isPlaying = !isPlaying
     }
