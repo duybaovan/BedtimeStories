@@ -21,6 +21,9 @@
 		2562324F2A3EC4D600DACCF1 /* test_conclusion.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2562324C2A3EC4D600DACCF1 /* test_conclusion.mp3 */; };
 		256232502A3EC4D600DACCF1 /* test_intermediary.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2562324D2A3EC4D600DACCF1 /* test_intermediary.mp3 */; };
 		256232512A3EC4D600DACCF1 /* test_question.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2562324E2A3EC4D600DACCF1 /* test_question.mp3 */; };
+		256232532A3F691000DACCF1 /* Inter-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 256232522A3F691000DACCF1 /* Inter-Bold.ttf */; };
+		256232552A3F6C9800DACCF1 /* Inter-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 256232542A3F6C9800DACCF1 /* Inter-SemiBold.ttf */; };
+		256232572A3F6D8D00DACCF1 /* Inter-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 256232562A3F6D8D00DACCF1 /* Inter-ExtraBold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +41,9 @@
 		2562324C2A3EC4D600DACCF1 /* test_conclusion.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = test_conclusion.mp3; sourceTree = "<group>"; };
 		2562324D2A3EC4D600DACCF1 /* test_intermediary.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = test_intermediary.mp3; sourceTree = "<group>"; };
 		2562324E2A3EC4D600DACCF1 /* test_question.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = test_question.mp3; sourceTree = "<group>"; };
+		256232522A3F691000DACCF1 /* Inter-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Bold.ttf"; sourceTree = "<group>"; };
+		256232542A3F6C9800DACCF1 /* Inter-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-SemiBold.ttf"; sourceTree = "<group>"; };
+		256232562A3F6D8D00DACCF1 /* Inter-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-ExtraBold.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,7 +86,10 @@
 				2562324D2A3EC4D600DACCF1 /* test_intermediary.mp3 */,
 				2562324E2A3EC4D600DACCF1 /* test_question.mp3 */,
 				2562322D2A3D497600DACCF1 /* ViewController.swift */,
+				256232562A3F6D8D00DACCF1 /* Inter-ExtraBold.ttf */,
 				256232402A3E79FB00DACCF1 /* Networker.swift */,
+				256232522A3F691000DACCF1 /* Inter-Bold.ttf */,
+				256232542A3F6C9800DACCF1 /* Inter-SemiBold.ttf */,
 				256232322A3D497600DACCF1 /* Assets.xcassets */,
 				256232342A3D497600DACCF1 /* LaunchScreen.storyboard */,
 				256232372A3D497600DACCF1 /* Info.plist */,
@@ -157,7 +166,10 @@
 			files = (
 				256232472A3E866000DACCF1 /* test_audio.mp3 in Resources */,
 				256232502A3EC4D600DACCF1 /* test_intermediary.mp3 in Resources */,
+				256232572A3F6D8D00DACCF1 /* Inter-ExtraBold.ttf in Resources */,
 				2562324F2A3EC4D600DACCF1 /* test_conclusion.mp3 in Resources */,
+				256232532A3F691000DACCF1 /* Inter-Bold.ttf in Resources */,
+				256232552A3F6C9800DACCF1 /* Inter-SemiBold.ttf in Resources */,
 				256232362A3D497600DACCF1 /* LaunchScreen.storyboard in Resources */,
 				256232512A3EC4D600DACCF1 /* test_question.mp3 in Resources */,
 				256232332A3D497600DACCF1 /* Assets.xcassets in Resources */,

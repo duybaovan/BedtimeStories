@@ -14,6 +14,8 @@ class CreationViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     let values = ["Optimism", "Tenacity", "Collaboration"]
 
     var activePickerView: UIPickerView?
+    
+    let customFont = UIFont(name: "Inter-Bold", size: 16)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,14 +25,14 @@ class CreationViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
 
         let nameLabel = UILabel(frame: CGRect(x: 20, y: 60, width: 100, height: 60))
         nameLabel.text = "Name"
+
         view.addSubview(nameLabel)
         
         let nameValueLabel = UILabel(frame: CGRect(x: 130, y: 60, width: Int(view.frame.width) - 150, height: 60))
         nameValueLabel.text = "Amelia"
-        let boldFont = UIFont.boldSystemFont(ofSize: nameValueLabel.font.pointSize)
 
         // Apply the bold font to the label's attributed text
-        let attributedText = NSAttributedString(string: nameValueLabel.text ?? "", attributes: [.font: boldFont])
+        let attributedText = NSAttributedString(string: nameValueLabel.text ?? "", attributes: [.font: customFont])
         nameValueLabel.attributedText = attributedText
         view.addSubview(nameValueLabel)
 
@@ -41,10 +43,9 @@ class CreationViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         for i in 0..<2 {
             let label = UILabel(frame: CGRect(x: 20, y: 120 + i * 60, width: 100, height: 60))
             label.text = labelsText[i]
-            let boldFont = UIFont.boldSystemFont(ofSize: label.font.pointSize)
 
             // Apply the bold font to the label's attributed text
-            let attributedText = NSAttributedString(string: label.text ?? "", attributes: [.font: boldFont])
+            let attributedText = NSAttributedString(string: label.text ?? "", attributes: [.font: customFont])
             label.attributedText = attributedText
             
             view.addSubview(label)
@@ -59,10 +60,9 @@ class CreationViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         for i in 2..<4 {
             let label = UILabel(frame: CGRect(x: 20, y: 120 + i * 60, width: 100, height: 60))
             label.text = labelsText[i]
-            let boldFont = UIFont.boldSystemFont(ofSize: label.font.pointSize)
 
             // Apply the bold font to the label's attributed text
-            let attributedText = NSAttributedString(string: label.text ?? "", attributes: [.font: boldFont])
+            let attributedText = NSAttributedString(string: label.text ?? "", attributes: [.font: customFont])
             label.attributedText = attributedText
             view.addSubview(label)
 

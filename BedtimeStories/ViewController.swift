@@ -36,9 +36,11 @@ class ReaderViewController: UIViewController {
         button.setTitle("Yes", for: .normal)
         button.addTarget(self, action: #selector(didTapYes), for: .touchUpInside)
         
-        button.layer.cornerRadius = 8
+        button.titleLabel?.font = UIFont(name: "Inter-Bold", size: 25)
+
+        button.layer.cornerRadius = 20
         button.layer.borderColor = UIColor.white.cgColor
-        button.layer.borderWidth = 1.0
+        button.layer.borderWidth = 3.0
         button.backgroundColor = UIColor(rgb: 0x143C77)
         
         return button
@@ -50,9 +52,12 @@ class ReaderViewController: UIViewController {
         button.setTitle("No", for: .normal)
         button.addTarget(self, action: #selector(didTapNo), for: .touchUpInside)
         
-        button.layer.cornerRadius = 8
+        button.titleLabel?.font = UIFont(name: "Inter-Bold", size: 25)
+
+        
+        button.layer.cornerRadius = 20
         button.layer.borderColor = UIColor.white.cgColor
-        button.layer.borderWidth = 1.0
+        button.layer.borderWidth = 3.0
         button.backgroundColor = UIColor(rgb: 0x143C77)
         
         return button
@@ -100,6 +105,8 @@ class ReaderViewController: UIViewController {
             noButton.isHidden = false
             textView.text = storyData?.s1.text
             isCompleted = false
+            
+
             let nextVC = CreationViewController()
            dismiss(animated: true)
             return
@@ -112,25 +119,42 @@ class ReaderViewController: UIViewController {
         textView.text = storyData?.s2.text
         noButton.isHidden = true
         yesButton.setTitle("Understood", for: .normal)
-        storyService.playAudio()
-         playButton.setBackgroundImage(UIImage(named: "pause_button"), for: .normal)
+        storyService.pauseAudio()
+         playButton.setBackgroundImage(UIImage(named: "play_button"), for: .normal)
         storyService.setUpAudio(named: "test_intermediary")
         
     }
     
     func showCompletion() {
-        playButtonTapped()
+        storyService.pauseAudio()
+         playButton.setBackgroundImage(UIImage(named: "play_button"), for: .normal)
         storyService.setUpAudio(named: "test_conclusion")
         textView.text = storyData?.s3.text
         noButton.isHidden = true
         yesButton.setTitle("Done", for: .normal)
     }
     
+    func highlightExtraBold(text: String, color: UIColor) {
+        guard let range = textView.text.range(of: text) else { return }
+        let nsRange = NSRange(range, in: textView.text)
+        let mutableAttributedText = NSMutableAttributedString(attributedString: textView.attributedText)
+
+        let fontDescriptor = UIFontDescriptor(name: "Inter-Bold", size: 20)
+            let font = UIFont(descriptor: fontDescriptor, size: 0) // size: 0 means it will use the font size defined in the descriptor
+
+            mutableAttributedText.addAttribute(.font, value: font, range: nsRange)
+        mutableAttributedText.addAttribute(.foregroundColor, value: color, range: nsRange)
+
+        textView.attributedText = mutableAttributedText
+    }
+
+    
+    
     func highlight(text: String) {
         guard let range = textView.text.range(of: text) else { return }
         let nsRange = NSRange(range, in: textView.text)
         let mutableAttributedText = NSMutableAttributedString(attributedString: textView.attributedText)
-        mutableAttributedText.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: 25), range: nsRange)
+        mutableAttributedText.addAttribute(.font, value: UIFont(name: "Inter-Bold", size: 32), range: nsRange)
 
         textView.attributedText = mutableAttributedText
     }
@@ -156,8 +180,19 @@ class ReaderViewController: UIViewController {
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.backgroundColor = .clear
         textView.textColor = .white
-        textView.font = UIFont.systemFont(ofSize: 20)
         textView.isScrollEnabled = false
+        textView.setCustomFont(name: "Inter-Bold", size: 20)
+        return textView
+    }()
+    
+    
+    let durationTextView: UITextView = {
+        let textView = UITextView(frame: .zero)
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.backgroundColor = .clear
+        textView.textColor = .white
+        textView.isScrollEnabled = false
+        textView.setCustomFont(name: "Inter-Bold", size: 12)
         return textView
     }()
     
@@ -236,14 +271,23 @@ class ReaderViewController: UIViewController {
                 self.textView.text = "The Energetic Wizard \n \(story.s1.text) \n\n\(story.question.text)"
                 highlight(text: "The Energetic Wizard")
 
-                highlight(text: "\(story.question.text)")
+                highlightExtraBold(text: "\(story.question.text)", color: .orange)
+                
+                imageUrls = story.s4.imageUrl
+                texts = story.s4.text
+                
+                loadFullScreenImages(with: imageUrls)
                 loadImage()
+
+                print(imageUrls)
 
 
             case .failure(let error):
                 print("Error fetching story: \(error)")
             }
         }
+        
+        durationTextView.text = "3:00"
 
         storyService.setUpAudio(named: "test_audio")
                       
@@ -262,13 +306,13 @@ class ReaderViewController: UIViewController {
         scrollView.addSubview(yesButton)
         scrollView.addSubview(noButton)
         scrollView.addSubview(playButton)
+        scrollView.addSubview(durationTextView)
         
         self.view.addSubview(activityIndicator)
 
         immersiveTextView.text = texts[0]
 
         // Load image
-        loadFullScreenImages(with: imageUrls)
         
 
                
@@ -308,8 +352,11 @@ class ReaderViewController: UIViewController {
             
             progressBar.centerYAnchor.constraint(equalTo: playButton.centerYAnchor),
             progressBar.leadingAnchor.constraint(equalTo: playButton.trailingAnchor, constant: 16),
-            progressBar.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
+            progressBar.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -80),
             
+            durationTextView.leadingAnchor.constraint(equalTo: progressBar.trailingAnchor, constant: 8),
+            durationTextView.centerYAnchor.constraint(equalTo: playButton.centerYAnchor),
+
             
             textView.topAnchor.constraint(equalTo: playButton.bottomAnchor, constant: 0),
             textView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
@@ -318,7 +365,7 @@ class ReaderViewController: UIViewController {
             textView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -32), // ensure the width of textView same as scrollView to enable vertical scroll
             
             yesButton.topAnchor.constraint(equalTo: textView.bottomAnchor, constant: 16),
-            yesButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
+            yesButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 50),
             yesButton.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: 0.4, constant: -24), // subtract the padding of leading and trailing buttons
             yesButton.heightAnchor.constraint(equalToConstant: 50),
             
@@ -400,9 +447,11 @@ class ReaderViewController: UIViewController {
         
         // Initialize the images array with nil values
         self.images = Array(repeating: nil, count: urlStrings.count)
-        
+        print("ssx \(urlStrings)")
         for (index, urlString) in urlStrings.enumerated() {
-            guard let fullScreenURL = URL(string: urlString) else { continue }
+            let fullScreenURL = URL(string: "http://localhost:8000\(urlString)")
+                                    print("ssx here")
+            guard let fullScreenURL = URL(string: "http://localhost:8000\(urlString)") else { continue }
             dispatchGroup.enter()
             
             DispatchQueue.global().async {
@@ -428,7 +477,7 @@ class ReaderViewController: UIViewController {
     }
     
     func loadImage() {
-        guard let url = URL(string: storyData?.s1.imageUrl ?? "https://images.immediate.co.uk/production/volatile/sites/4/2023/02/Midjourney-small-f3a9034.jpg") else { return }
+        guard let url = URL(string: storyData?.s1.imageUrl?[0] ?? "https://images.immediate.co.uk/production/volatile/sites/4/2023/02/Midjourney-small-f3a9034.jpg") else { return }
         
         DispatchQueue.global().async {
             if let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
@@ -467,5 +516,43 @@ class ReaderViewController: UIViewController {
             super.init(coder: coder)
         }
         
+    }
+}
+
+extension UILabel {
+    func setCustomFont(name: String, size: CGFloat) {
+        if let customFont = UIFont(name: name, size: size) {
+            self.font = customFont
+        } else {
+            // Fallback to the system font or a default font if the custom font is not found.
+            self.font = UIFont.systemFont(ofSize: size)
+            // Alternatively, you can display a warning or handle the failure differently.
+            // print("Custom font '\(name)' not found.")
+        }
+    }
+}
+
+extension UITextView {
+    func setCustomFont(name: String, size: CGFloat) {
+        if let customFont = UIFont(name: name, size: size) {
+            self.font = customFont
+        } else {
+            self.font = UIFont.systemFont(ofSize: size)
+            // Alternatively, handle the font not found scenario as per your requirements.
+            // print("Custom font '\(name)' not found.")
+        }
+    }
+}
+
+
+extension String {
+    func nsRange(from range: Range<Index>) -> NSRange {
+        let utf16view = self.utf16
+        if let from = range.lowerBound.samePosition(in: utf16view),
+           let to = range.upperBound.samePosition(in: utf16view) {
+            return NSRange(location: utf16view.distance(from: utf16view.startIndex, to: from),
+                           length: utf16view.distance(from: from, to: to))
+        }
+        return NSRange(location: 0, length: 0)
     }
 }

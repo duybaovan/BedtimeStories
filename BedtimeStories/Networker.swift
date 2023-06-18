@@ -5,32 +5,39 @@
 //  Created by Bao Van on 6/17/23.
 //
 
-import Foundation
 import Alamofire
 import AVFoundation
-
-struct Story: Codable {
-    let s1: Section
-    let s2: Section
-    let s3: Section
-    let question: Question
-
-    struct Section: Codable {
-        let text: String
-        let highlightedText: [String]?
-        let imageUrl: String?
-        let audioUrl: String
-    }
-
-    struct Question: Codable {
-        let text: String
-        let audioUrl: String
-    }
-}
+import Foundation
 
 struct Response: Codable {
     let data: Story
 }
+
+struct Story: Codable {
+    let s1, s2, s3: S
+    let s4: SArray
+    let question: Question
+}
+
+struct SArray: Codable {
+    let imageUrl: [String]
+    let text: [String]
+}
+
+struct S: Codable {
+    let text: String
+    let highlightedText: [String]?
+    let imageUrl: [String]?
+    let audioUrl: String
+}
+
+
+
+struct Question: Codable {
+    let text: String
+    let audioUrl: String
+}
+
 
 class StoryService {
     
@@ -51,7 +58,6 @@ class StoryService {
         completion: @escaping (Result<Story, Error>) -> Void) {
         
         let url = "http://localhost:8000/dev/story"
-
         let headers: HTTPHeaders = [
             "Content-Type": "application/json"
         ]
@@ -66,16 +72,15 @@ class StoryService {
         ]
 
             
-            sessionManager.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers:headers).responseDecodable(of:Response.self) { response in
-                switch response.result {
-                case .success(let data):
-                    completion(.success(data.data))
+        sessionManager.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers:headers).responseDecodable(of:Response.self) { response in
+            switch response.result {
+            case .success(let data):
+                completion(.success(data.data))
 
-                case .failure(let error):
-                    print("Request failed with error: \(error)")
-                }
+            case .failure(let error):
+                print("Request failed with error: \(error)")
             }
-            
+        }
 
     }
     
