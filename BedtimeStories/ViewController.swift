@@ -11,7 +11,7 @@ class ReaderViewController: UIViewController {
 
     var currentIndex: Int = 0
     var storyData: Story?
-
+    var isPlaying = false
     var images: [UIImage?] = []
     var imageUrls: [String] = ["https://preview.redd.it/sbl0qy0jlhl91.png?width=1024&format=png&auto=webp&v=enabled&s=c2b55b97c07c02f99fcc3dbbca1cc630b92c0fcb", "https://w0.peakpx.com/wallpaper/853/463/HD-wallpaper-midjourney-ai-art-for-book-cover-design-how-is-this-legal.jpg","https://imageio.forbes.com/specials-images/imageserve/63f8118ae17897a4890f01a1/0x0.jpg?format=jpg&width=1200"]
 
@@ -94,7 +94,8 @@ class ReaderViewController: UIViewController {
         return textView
     }()
     
-    
+    let storyService = StoryService()
+
     
     var toggleButton: ToggleButton = {
         let button = ToggleButton()
@@ -145,7 +146,6 @@ class ReaderViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let storyService = StoryService()
         storyService.fetchStory { [weak self] (result) in
             guard let self = self else { return }
             switch result {
@@ -158,8 +158,8 @@ class ReaderViewController: UIViewController {
                 print("Error fetching story: \(error)")
             }
         }
-        
 
+        storyService.setUpAudio()
                       
         // Set the background color to purple
         self.view.backgroundColor = .purple
@@ -246,7 +246,12 @@ class ReaderViewController: UIViewController {
     
     // Add a dummy function to handle the play button tap
     @objc func playButtonTapped() {
-        print("Play button tapped")
+        if(!isPlaying){
+           storyService.playAudio()
+        } else {
+            storyService.pauseAudio()
+        }
+        isPlaying = !isPlaying
     }
     
     func loadFullScreenImages(with urlStrings: [String]) {

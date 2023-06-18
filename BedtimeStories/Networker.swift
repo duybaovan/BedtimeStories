@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import AVFoundation
 
 struct Story: Codable {
     let s1: Section
@@ -32,6 +33,10 @@ struct Response: Codable {
 }
 
 class StoryService {
+    
+    var audioPlayer: AVAudioPlayer?
+
+    
     func fetchStory(completion: @escaping (Result<Story, Error>) -> Void) {
         let url = "http://localhost:8000/dev/story"
 
@@ -43,5 +48,28 @@ class StoryService {
                 completion(.failure(error))
             }
         }
+    }
+    
+    
+    func setUpAudio() {
+        guard let url = Bundle.main.url(forResource: "test_audio", withExtension: "mp3") else { return }
+
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+            try AVAudioSession.sharedInstance().setActive(true)
+
+            /* The following line is required for the player to work on iOS 11. Change the file type accordingly*/
+            audioPlayer = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
+
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+    func playAudio() {
+        audioPlayer?.play()
+    }
+    
+    func pauseAudio() {
+        audioPlayer?.pause()
     }
 }
