@@ -7,41 +7,13 @@
 
 import UIKit
 
-class ToggleButton: UIButton {
-    // Custom properties to store the images for toggle states
-    var textImage: UIImage?
-    var visualImage: UIImage?
-
-    // Current toggle state
-    var isTextMode: Bool = true {
-        didSet {
-            // Update the button's image based on the toggle state
-            setImage(isTextMode ? textImage : visualImage, for: .normal)
-        }
-    }
-    
-    // Initialization
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        // Set up the initial button image
-        setImage(textImage, for: .normal)
-        
-        // Add a target to handle button taps
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-    
-}
-
 class ReaderViewController: UIViewController {
 
     var currentIndex: Int = 0
+    var storyData: Story?
 
-    var images: [UIImage] = []
-    var imageUrls: [String] = ["https://preview.redd.it/sbl0qy0jlhl91.png?width=1024&format=png&auto=webp&v=enabled&s=c2b55b97c07c02f99fcc3dbbca1cc630b92c0fcb", "https://w0.peakpx.com/wallpaper/853/463/HD-wallpaper-midjourney-ai-art-for-book-cover-design-how-is-this-legal.jpg"]
+    var images: [UIImage?] = []
+    var imageUrls: [String] = ["https://preview.redd.it/sbl0qy0jlhl91.png?width=1024&format=png&auto=webp&v=enabled&s=c2b55b97c07c02f99fcc3dbbca1cc630b92c0fcb", "https://w0.peakpx.com/wallpaper/853/463/HD-wallpaper-midjourney-ai-art-for-book-cover-design-how-is-this-legal.jpg","https://imageio.forbes.com/specials-images/imageserve/63f8118ae17897a4890f01a1/0x0.jpg?format=jpg&width=1200"]
 
     var texts = ["This is story part 1", "THis is story part 2 the middle part", "The finale"]
     
@@ -79,7 +51,6 @@ class ReaderViewController: UIViewController {
     
     func highlight(text: String) {
         guard let range = textView.text.range(of: text) else { return }
-
         let nsRange = NSRange(range, in: textView.text)
         let mutableAttributedText = NSMutableAttributedString(attributedString: textView.attributedText)
         mutableAttributedText.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: 22), range: nsRange)
@@ -179,11 +150,16 @@ class ReaderViewController: UIViewController {
             guard let self = self else { return }
             switch result {
             case .success(let story):
-                self.textView.text = story.s1.text
+                self.storyData = story
+                self.textView.text = "Title of the story \n \(story.s1.text) \n \(story.s1.text)"
+                highlight(text: "Title of the story")
+
             case .failure(let error):
                 print("Error fetching story: \(error)")
             }
         }
+        
+
                       
         // Set the background color to purple
         self.view.backgroundColor = .purple
@@ -195,8 +171,8 @@ class ReaderViewController: UIViewController {
         self.view.addSubview(toggleButton)
         self.view.addSubview(immersiveTextView)
         
-        scrollView.addSubview(playButton)
         scrollView.addSubview(textView)
+        scrollView.addSubview(playButton)
         
         immersiveTextView.text = texts[0]
 
@@ -210,7 +186,6 @@ class ReaderViewController: UIViewController {
         // Handle play button tap
         playButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
 
-        highlight(text: "Lorem ipsum dolor")
         
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
@@ -234,11 +209,11 @@ class ReaderViewController: UIViewController {
             scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
             playButton.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16),
-            playButton.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 16),
+            playButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
             playButton.heightAnchor.constraint(equalToConstant: 50),
             playButton.widthAnchor.constraint(equalToConstant: 50),
             
-            textView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 16),
+            textView.topAnchor.constraint(equalTo: playButton.bottomAnchor, constant: 0),
             textView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
             textView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 16),
             textView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
@@ -277,17 +252,17 @@ class ReaderViewController: UIViewController {
     func loadFullScreenImages(with urlStrings: [String]) {
         let dispatchGroup = DispatchGroup()
         
-        for urlString in urlStrings {
+        // Initialize the images array with nil values
+        self.images = Array(repeating: nil, count: urlStrings.count)
+        
+        for (index, urlString) in urlStrings.enumerated() {
             guard let fullScreenURL = URL(string: urlString) else { continue }
             dispatchGroup.enter()
             
             DispatchQueue.global().async {
                 if let data = try? Data(contentsOf: fullScreenURL), let image = UIImage(data: data) {
                     DispatchQueue.main.async {
-                        self.images.append(image)
-                        if self.fullScreenImageView.image == nil {
-                            self.fullScreenImageView.image = image
-                        }
+                        self.images[index] = image // Save the image at the correct index
                         dispatchGroup.leave()
                     }
                 } else {
@@ -296,9 +271,13 @@ class ReaderViewController: UIViewController {
             }
         }
         
+
+        
         dispatchGroup.notify(queue: .main) {
             print("All images are loaded")
-            // Here you can perform any operation you need after all images are loaded
+            self.fullScreenImageView.image = self.images[self.currentIndex]
+            // Clean up images array by removing nil values if any
+            self.images = self.images.compactMap { $0 }
         }
     }
     
@@ -315,4 +294,32 @@ class ReaderViewController: UIViewController {
         
     }
     
+    class ToggleButton: UIButton {
+        // Custom properties to store the images for toggle states
+        var textImage: UIImage?
+        var visualImage: UIImage?
+        
+        // Current toggle state
+        var isTextMode: Bool = true {
+            didSet {
+                // Update the button's image based on the toggle state
+                setImage(isTextMode ? textImage : visualImage, for: .normal)
+            }
+        }
+        
+        // Initialization
+        override init(frame: CGRect) {
+            super.init(frame: frame)
+            
+            // Set up the initial button image
+            setImage(textImage, for: .normal)
+            
+            // Add a target to handle button taps
+        }
+        
+        required init?(coder: NSCoder) {
+            super.init(coder: coder)
+        }
+        
+    }
 }
