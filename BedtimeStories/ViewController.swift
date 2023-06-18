@@ -8,13 +8,33 @@
 import UIKit
 
 class ReaderViewController: UIViewController {
-
+    
     var currentIndex: Int = 0
     var storyData: Story?
+    var isCompleted = false
     var isPlaying = false
     var images: [UIImage?] = []
+    let yesButton: UIButton = {
+        let button = UIButton(frame: .zero)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .blue
+        button.setTitle("Yes", for: .normal)
+        button.addTarget(self, action: #selector(didTapYes), for: .touchUpInside)
+        
+        return button
+    }()
+    
+    let noButton: UIButton = {
+        let button = UIButton(frame: .zero)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .red
+        button.setTitle("No", for: .normal)
+        button.addTarget(self, action: #selector(didTapNo), for: .touchUpInside)
+        
+        return button
+    }()
     var imageUrls: [String] = ["https://preview.redd.it/sbl0qy0jlhl91.png?width=1024&format=png&auto=webp&v=enabled&s=c2b55b97c07c02f99fcc3dbbca1cc630b92c0fcb", "https://w0.peakpx.com/wallpaper/853/463/HD-wallpaper-midjourney-ai-art-for-book-cover-design-how-is-this-legal.jpg","https://imageio.forbes.com/specials-images/imageserve/63f8118ae17897a4890f01a1/0x0.jpg?format=jpg&width=1200"]
-
+    
     var texts = ["This is story part 1", "THis is story part 2 the middle part", "The finale"]
     
     let fullScreenImageView: UIImageView = {
@@ -30,7 +50,7 @@ class ReaderViewController: UIViewController {
             updateLayout()
         }
     }
-
+    
     var defaultConstraints: [NSLayoutConstraint] = []
     var immersiveConstraints: [NSLayoutConstraint] = []
     
@@ -47,6 +67,35 @@ class ReaderViewController: UIViewController {
         toggleButton.isTextMode.toggle()
         isReaderMode = !isReaderMode
         self.view.setNeedsLayout()
+    }
+    
+    @objc func didTapYes() {
+        if(isCompleted){
+            yesButton.setTitle("Yes", for: .normal)
+            noButton.setTitle("No", for: .normal)
+            yesButton.backgroundColor = .blue
+            noButton.backgroundColor = .red
+            noButton.isHidden = false
+            textView.text = storyData?.s1.text
+            isCompleted = false
+            return
+        }
+        isCompleted = true
+        showCompletion()
+    }
+    
+    @objc func didTapNo() {
+        textView.text = storyData?.s2.text
+        noButton.isHidden = true
+        yesButton.setTitle("Understood", for: .normal)
+
+    }
+    
+    func showCompletion() {
+        textView.text = storyData?.s3.text
+        noButton.isHidden = true
+        yesButton.setTitle("Return", for: .normal)
+        yesButton.backgroundColor = .brown
     }
     
     func highlight(text: String) {
@@ -172,6 +221,8 @@ class ReaderViewController: UIViewController {
         self.view.addSubview(immersiveTextView)
         
         scrollView.addSubview(textView)
+        scrollView.addSubview(yesButton)
+        scrollView.addSubview(noButton)
         scrollView.addSubview(playButton)
         
         immersiveTextView.text = texts[0]
@@ -216,9 +267,26 @@ class ReaderViewController: UIViewController {
             textView.topAnchor.constraint(equalTo: playButton.bottomAnchor, constant: 0),
             textView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
             textView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 16),
+            textView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -100),
+            textView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -32), // ensure the width of textView same as scrollView to enable vertical scroll
+            
+            yesButton.topAnchor.constraint(equalTo: textView.bottomAnchor, constant: 16),
+            yesButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
+            yesButton.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: 0.5, constant: -24), // subtract the padding of leading and trailing buttons
+            yesButton.heightAnchor.constraint(equalToConstant: 50),
+            
+            noButton.topAnchor.constraint(equalTo: textView.bottomAnchor, constant: 16),
+            noButton.leadingAnchor.constraint(equalTo: yesButton.trailingAnchor, constant: 16),
+            noButton.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
+            noButton.heightAnchor.constraint(equalToConstant: 50),
+            noButton.widthAnchor.constraint(equalTo: yesButton.widthAnchor), // ensure both buttons are of same width
+            
+            // To prevent content cutoff and enable scrolling, we need to set bottom constraint
             textView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            textView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -32) // ensure the width of textView same as scrollView to enable vertical scroll
+            textView.bottomAnchor.constraint(equalTo: yesButton.topAnchor, constant: -16),
+
         ]
+        
         immersiveConstraints = [
             fullScreenImageView.topAnchor.constraint(equalTo: view.topAnchor),
             fullScreenImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
