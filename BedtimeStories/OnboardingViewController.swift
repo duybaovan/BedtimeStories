@@ -56,6 +56,9 @@ class OnboardingViewController2: UIViewController {
         let creationViewController = CreationViewController()
         let nav = UINavigationController(rootViewController: creationViewController)
            // 1
+        
+        nav.topViewController?.title = "Create tonight's story"
+
            nav.modalPresentationStyle = .pageSheet
 
            

@@ -39,7 +39,15 @@ class StoryService {
     
     func fetchStory(completion: @escaping (Result<Story, Error>) -> Void) {
         let url = "http://localhost:8000/dev/story"
-
+        let parameters: [String: Any] = [
+            "name": "Ben",
+            "modifier": "Make the story super funny",
+            "narration": "Dumbledore",
+            "topic": "What is energy?",
+            "character_environment": "Ninja universe",
+            "character_descriptors": ["freckles", "glasses", "fast"]
+        ]
+        
         AF.request(url, method: .post).responseDecodable(of: Response.self) { (response) in
             switch response.result {
             case .success(let data):

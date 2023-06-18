@@ -17,9 +17,13 @@ class ReaderViewController: UIViewController {
     let yesButton: UIButton = {
         let button = UIButton(frame: .zero)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .blue
         button.setTitle("Yes", for: .normal)
         button.addTarget(self, action: #selector(didTapYes), for: .touchUpInside)
+        
+        button.layer.cornerRadius = 8
+        button.layer.borderColor = UIColor.white.cgColor
+        button.layer.borderWidth = 1.0
+        button.backgroundColor = UIColor(rgb: 0x143C77)
         
         return button
     }()
@@ -27,9 +31,13 @@ class ReaderViewController: UIViewController {
     let noButton: UIButton = {
         let button = UIButton(frame: .zero)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .red
         button.setTitle("No", for: .normal)
         button.addTarget(self, action: #selector(didTapNo), for: .touchUpInside)
+        
+        button.layer.cornerRadius = 8
+        button.layer.borderColor = UIColor.white.cgColor
+        button.layer.borderWidth = 1.0
+        button.backgroundColor = UIColor(rgb: 0x143C77)
         
         return button
     }()
@@ -73,8 +81,6 @@ class ReaderViewController: UIViewController {
         if(isCompleted){
             yesButton.setTitle("Yes", for: .normal)
             noButton.setTitle("No", for: .normal)
-            yesButton.backgroundColor = .blue
-            noButton.backgroundColor = .red
             noButton.isHidden = false
             textView.text = storyData?.s1.text
             isCompleted = false
@@ -97,14 +103,13 @@ class ReaderViewController: UIViewController {
         textView.text = storyData?.s3.text
         noButton.isHidden = true
         yesButton.setTitle("Done", for: .normal)
-        yesButton.backgroundColor = .brown
     }
     
     func highlight(text: String) {
         guard let range = textView.text.range(of: text) else { return }
         let nsRange = NSRange(range, in: textView.text)
         let mutableAttributedText = NSMutableAttributedString(attributedString: textView.attributedText)
-        mutableAttributedText.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: 22), range: nsRange)
+        mutableAttributedText.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: 25), range: nsRange)
 
         textView.attributedText = mutableAttributedText
     }
@@ -128,7 +133,7 @@ class ReaderViewController: UIViewController {
     let textView: UITextView = {
         let textView = UITextView(frame: .zero)
         textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.backgroundColor = .purple
+        textView.backgroundColor = .clear
         textView.textColor = .white
         textView.font = UIFont.systemFont(ofSize: 20)
         textView.isScrollEnabled = false
@@ -202,8 +207,10 @@ class ReaderViewController: UIViewController {
             switch result {
             case .success(let story):
                 self.storyData = story
-                self.textView.text = "Title of the story \n \(story.s1.text) \n \(story.s1.text)"
-                highlight(text: "Title of the story")
+                self.textView.text = "The Energetic Wizard \n \(story.s1.text) \n\n\(story.question.text)"
+                highlight(text: "The Energetic Wizard")
+
+                highlight(text: "\(story.question.text)")
                 loadImage()
 
 
@@ -215,7 +222,7 @@ class ReaderViewController: UIViewController {
         storyService.setUpAudio()
                       
         // Set the background color to purple
-        self.view.backgroundColor = .purple
+        self.view.backgroundColor = UIColor(rgb: 0x143C77)
         
         // Add subviews
         self.view.addSubview(fullScreenImageView)
@@ -275,7 +282,7 @@ class ReaderViewController: UIViewController {
             
             yesButton.topAnchor.constraint(equalTo: textView.bottomAnchor, constant: 16),
             yesButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
-            yesButton.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: 0.5, constant: -24), // subtract the padding of leading and trailing buttons
+            yesButton.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: 0.4, constant: -24), // subtract the padding of leading and trailing buttons
             yesButton.heightAnchor.constraint(equalToConstant: 50),
             
             noButton.topAnchor.constraint(equalTo: textView.bottomAnchor, constant: 16),
