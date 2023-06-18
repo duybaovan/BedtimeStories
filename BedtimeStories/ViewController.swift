@@ -79,7 +79,7 @@ class ReaderViewController: UIViewController {
             textView.text = storyData?.s1.text
             isCompleted = false
             let nextVC = CreationViewController()
-            navigationController?.pushViewController(nextVC, animated: true)
+           dismiss(animated: true)
             return
         }
         isCompleted = true
@@ -204,7 +204,6 @@ class ReaderViewController: UIViewController {
                 self.storyData = story
                 self.textView.text = "Title of the story \n \(story.s1.text) \n \(story.s1.text)"
                 highlight(text: "Title of the story")
-                print("ssx here \(self.storyData?.s1.imageUrl)")
                 loadImage()
 
 

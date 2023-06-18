@@ -17,6 +17,7 @@
 		256232442A3E7A2D00DACCF1 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 256232432A3E7A2D00DACCF1 /* Alamofire */; };
 		256232472A3E866000DACCF1 /* test_audio.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 256232462A3E866000DACCF1 /* test_audio.mp3 */; };
 		256232492A3E982000DACCF1 /* CreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256232482A3E982000DACCF1 /* CreationViewController.swift */; };
+		2562324B2A3EA08700DACCF1 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2562324A2A3EA08700DACCF1 /* OnboardingViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		256232402A3E79FB00DACCF1 /* Networker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networker.swift; sourceTree = "<group>"; };
 		256232462A3E866000DACCF1 /* test_audio.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = test_audio.mp3; sourceTree = "<group>"; };
 		256232482A3E982000DACCF1 /* CreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreationViewController.swift; sourceTree = "<group>"; };
+		2562324A2A3EA08700DACCF1 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 				256232322A3D497600DACCF1 /* Assets.xcassets */,
 				256232342A3D497600DACCF1 /* LaunchScreen.storyboard */,
 				256232372A3D497600DACCF1 /* Info.plist */,
+				2562324A2A3EA08700DACCF1 /* OnboardingViewController.swift */,
 			);
 			path = BedtimeStories;
 			sourceTree = "<group>";
@@ -157,6 +160,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				256232492A3E982000DACCF1 /* CreationViewController.swift in Sources */,
+				2562324B2A3EA08700DACCF1 /* OnboardingViewController.swift in Sources */,
 				2562322E2A3D497600DACCF1 /* ViewController.swift in Sources */,
 				2562322A2A3D497600DACCF1 /* AppDelegate.swift in Sources */,
 				2562322C2A3D497600DACCF1 /* SceneDelegate.swift in Sources */,

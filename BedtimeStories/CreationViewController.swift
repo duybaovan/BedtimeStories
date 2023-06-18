@@ -7,7 +7,6 @@
 
 import Foundation
 import UIKit
-import UIKit
 
 class CreationViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
@@ -21,15 +20,23 @@ class CreationViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
 
         self.view.backgroundColor = UIColor.purple
 
+        let nameLabel = UILabel(frame: CGRect(x: 20, y: 60, width: 100, height: 60))
+        nameLabel.text = "Name"
+        view.addSubview(nameLabel)
+        
+        let nameValueLabel = UILabel(frame: CGRect(x: 130, y: 60, width: Int(view.frame.width) - 150, height: 60))
+        nameValueLabel.text = "Amelia"
+        view.addSubview(nameValueLabel)
+
         let labelsText = ["Story World", "Value", "Lesson", "Question"]
         let pickersData = [names, values]
         
         for i in 0..<2 {
-            let label = UILabel(frame: CGRect(x: 20, y: 60 + i * 60, width: 100, height: 60))
+            let label = UILabel(frame: CGRect(x: 20, y: 120 + i * 60, width: 100, height: 60))
             label.text = labelsText[i]
             view.addSubview(label)
             
-            let pickerView = UIPickerView(frame: CGRect(x: 130, y: 60 + i * 60, width: Int(view.frame.width) - 150, height: 60))
+            let pickerView = UIPickerView(frame: CGRect(x: 130, y: 120 + i * 60, width: Int(view.frame.width) - 150, height: 60))
             pickerView.tag = i
             pickerView.delegate = self
             pickerView.dataSource = self
@@ -37,16 +44,16 @@ class CreationViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         }
 
         for i in 2..<4 {
-            let label = UILabel(frame: CGRect(x: 20, y: 60 + i * 60, width: 100, height: 60))
+            let label = UILabel(frame: CGRect(x: 20, y: 120 + i * 60, width: 100, height: 60))
             label.text = labelsText[i]
             view.addSubview(label)
 
-            let textField = UITextField(frame: CGRect(x: 130, y: 60 + i * 60, width: Int(view.frame.width) - 150, height: 60))
+            let textField = UITextField(frame: CGRect(x: 130, y: 120 + i * 60, width: Int(view.frame.width) - 150, height: 60))
             textField.placeholder = "Enter " + labelsText[i]
             view.addSubview(textField)
         }
         
-        let button = UIButton(frame: CGRect(x: 20, y: 60 * 5, width: view.frame.width - 40, height: 60))
+        let button = UIButton(frame: CGRect(x: 20, y: 60 * 6, width: view.frame.width - 40, height: 60))
         button.setTitle("Generate", for: .normal)
         button.backgroundColor = .blue
         button.addTarget(self, action: #selector(generateButtonTapped), for: .touchUpInside)
@@ -55,7 +62,7 @@ class CreationViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     
     @objc func generateButtonTapped() {
         let nextVC = ReaderViewController()
-        navigationController?.pushViewController(nextVC, animated: true)
+        navigationController?.setViewControllers([nextVC], animated: true)
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
