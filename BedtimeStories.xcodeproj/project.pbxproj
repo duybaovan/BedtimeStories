@@ -16,6 +16,7 @@
 		256232412A3E79FB00DACCF1 /* Networker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256232402A3E79FB00DACCF1 /* Networker.swift */; };
 		256232442A3E7A2D00DACCF1 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 256232432A3E7A2D00DACCF1 /* Alamofire */; };
 		256232472A3E866000DACCF1 /* test_audio.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 256232462A3E866000DACCF1 /* test_audio.mp3 */; };
+		256232492A3E982000DACCF1 /* CreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256232482A3E982000DACCF1 /* CreationViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		256232372A3D497600DACCF1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		256232402A3E79FB00DACCF1 /* Networker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networker.swift; sourceTree = "<group>"; };
 		256232462A3E866000DACCF1 /* test_audio.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = test_audio.mp3; sourceTree = "<group>"; };
+		256232482A3E982000DACCF1 /* CreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreationViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +67,7 @@
 				256232462A3E866000DACCF1 /* test_audio.mp3 */,
 				256232292A3D497600DACCF1 /* AppDelegate.swift */,
 				2562322B2A3D497600DACCF1 /* SceneDelegate.swift */,
+				256232482A3E982000DACCF1 /* CreationViewController.swift */,
 				2562322D2A3D497600DACCF1 /* ViewController.swift */,
 				256232402A3E79FB00DACCF1 /* Networker.swift */,
 				256232322A3D497600DACCF1 /* Assets.xcassets */,
@@ -153,6 +156,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				256232492A3E982000DACCF1 /* CreationViewController.swift in Sources */,
 				2562322E2A3D497600DACCF1 /* ViewController.swift in Sources */,
 				2562322A2A3D497600DACCF1 /* AppDelegate.swift in Sources */,
 				2562322C2A3D497600DACCF1 /* SceneDelegate.swift in Sources */,

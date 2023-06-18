@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  ReaderViewController.swift
 //  BedtimeStories
 //
 //  Created by Bao Van on 6/16/23.
@@ -78,6 +78,8 @@ class ReaderViewController: UIViewController {
             noButton.isHidden = false
             textView.text = storyData?.s1.text
             isCompleted = false
+            let nextVC = CreationViewController()
+            navigationController?.pushViewController(nextVC, animated: true)
             return
         }
         isCompleted = true
@@ -94,7 +96,7 @@ class ReaderViewController: UIViewController {
     func showCompletion() {
         textView.text = storyData?.s3.text
         noButton.isHidden = true
-        yesButton.setTitle("Return", for: .normal)
+        yesButton.setTitle("Done", for: .normal)
         yesButton.backgroundColor = .brown
     }
     
@@ -202,6 +204,9 @@ class ReaderViewController: UIViewController {
                 self.storyData = story
                 self.textView.text = "Title of the story \n \(story.s1.text) \n \(story.s1.text)"
                 highlight(text: "Title of the story")
+                print("ssx here \(self.storyData?.s1.imageUrl)")
+                loadImage()
+
 
             case .failure(let error):
                 print("Error fetching story: \(error)")
@@ -228,7 +233,6 @@ class ReaderViewController: UIViewController {
         immersiveTextView.text = texts[0]
 
         // Load image
-        loadImage()
         loadFullScreenImages(with: imageUrls)
         
 
@@ -358,7 +362,7 @@ class ReaderViewController: UIViewController {
     }
     
     func loadImage() {
-        guard let url = URL(string: "https://images.immediate.co.uk/production/volatile/sites/4/2023/02/Midjourney-small-f3a9034.jpg") else { return }
+        guard let url = URL(string: storyData?.s1.imageUrl ?? "https://images.immediate.co.uk/production/volatile/sites/4/2023/02/Midjourney-small-f3a9034.jpg") else { return }
         
         DispatchQueue.global().async {
             if let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
